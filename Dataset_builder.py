@@ -52,8 +52,15 @@ class Dataset_builder(object):
 
 	def return_room_and_time(self, single_file_path):
 		room_id = single_file_path.split('/')[1]
-		YMD_time = single_file_path.split('/')[2][:-4]
+		YMD_time = self.add_leading_zero_to_date(single_file_path.split('/')[2][:-4])
 		return room_id, YMD_time
+
+	def add_leading_zero_to_date(self, YMD_time):
+		date_list = YMD_time.split('-')
+		assert len(date_list) == 3, "YMD time format error"
+		date_list[1] = '{:02}'.format(int(date_list[1]))
+		date_list[2] = '{:02}'.format(int(date_list[2]))
+		return '-'.join(date_list)
 
 if __name__ == '__main__':
 	input_path = "bilibili-vtuber-danmaku/"
