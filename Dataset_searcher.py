@@ -16,7 +16,7 @@ class Dataset_searcher(object):
 	def select_simultaneous_interpretation_man(self, man_threshold):
 		'man_threshold: Only record the UID whose interpretation is above this threshold'
 		cursor = self.c.execute("SELECT UID, message, count(UID) "
-		                        "from DD_DANMAKU_TABLE WHERE substr(message,1,1) = '【' AND substr(message,-1,1) = '】'"
+		                        "from DD_DANMAKU_TABLE WHERE substr(message,1,1) = '【' AND substr(message,-1,1) = '】' AND UID != '114514'"
 		                        "GROUP by UID ORDER BY count(UID) DESC;")
 		simultaneous_interpretation_man_list = [(self.show_me_your_id(row[0]), row[-1]) for row in cursor if row[-1] > man_threshold]
 		return simultaneous_interpretation_man_list
