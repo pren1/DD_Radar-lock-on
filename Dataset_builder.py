@@ -1,8 +1,5 @@
 # Created by pren1 at 12/20/2019
 import pdb
-import time
-import numpy as np
-import sys
 from File_scan import File_scan
 from txt_processor import txt_processor
 import sqlite3
