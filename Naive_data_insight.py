@@ -18,37 +18,37 @@ class Naive_data_insight(object):
 
 	def output_interpretation_man_rank_csv(self, csv_name):
 		interpretation_man_rank_list = self.ds.select_simultaneous_interpretation_man(man_threshold=self.man_threshold,
-		                                                                                 show_name=True)
-		df = pd.DataFrame(columns=['昵称', '同传弹幕数'])
-		for index, single in enumerate(interpretation_man_rank_list):
-			df.loc[f'{index}'] = single
+		                                                                               show_name=True)
+
+		df = self.time_line_to_dataframe(interpretation_man_rank_list, columns=['昵称', '同传弹幕数'])
 		df.to_csv(csv_name, sep='\t', encoding='utf-8')
 
 	def visualize_single_uid_timeline(self, input_UID):
-		single_uid_interpretation_timeline = self.time_line_to_dataframe(
-			self.ds.Single_UID_interpretation_timeline(input_UID=input_UID), columns=['YMD_time', 'room_id', 'user_id', 'danmaku_count'])
-		# single_uid_interpretation_timeline[['YMD_time', 'danmaku_count']].set_index('YMD_time').plot()
-		# single_uid_all_danmaku_timeline = self.ds.Single_UID_all_danmaku_timeline(input_UID=input_UID)
-		# ax = sns.scatterplot(x="YMD_time", y="danmaku_count", hue="room_id", data = single_uid_interpretation_timeline)
+		def visualize_dataframe(new_df, title):
+			plt.rcParams['font.sans-serif']=['SimHei']
+			new_df.loc[:, 'danmaku_count'] = new_df['danmaku_count'].astype(float)
+			new_df.YMD_time = pd.to_datetime(new_df['YMD_time'])
+			g = sns.FacetGrid(new_df, hue="room_id", height=8, aspect=2)
+			g.map(plt.scatter, "YMD_time", "danmaku_count")
+			g.fig.legend(loc='best', shadow=True)
+			g.map(plt.plot, "YMD_time", "danmaku_count")
+			plt.title(title)
+			plt.gcf().autofmt_xdate()
+			plt.subplots_adjust(left=0.08, bottom=0.10, right=0.98, top=0.93, wspace=0.05, hspace=0.05)
+			plt.show()
 
-		# new_df = single_uid_interpretation_timeline.set_index('YMD_time')
-		new_df = single_uid_interpretation_timeline
-		new_df.loc[:, 'danmaku_count'] = new_df['danmaku_count'].astype(float)
-		# new_df.room_id = new_df.room_id.astype('category')
-		new_df.YMD_time = pd.to_datetime(new_df['YMD_time'])
+		Single_UID_interpretation_df = self.time_line_to_dataframe(
+			self.ds.Single_UID_interpretation_timeline(input_UID=input_UID),
+			columns=['YMD_time', 'room_id', 'user_id', 'danmaku_count'])
 
-		g = sns.FacetGrid(new_df, hue="room_id", height=8)
-		g.map(plt.scatter, "YMD_time", "danmaku_count")
-		g.add_legend()
-		# g.fig.legend(loc='best', shadow=True, fontsize='xx-small')
-		g.map(plt.plot, "YMD_time", "danmaku_count")
-		# ax = sns.scatterplot(x=new_df.index, y=new_df.danmaku_count, hue=new_df.room_id, palette=sns.color_palette("Set1", len(set(new_df.room_id))), data=new_df)
-		plt.gcf().autofmt_xdate()
-		# legend = plt.legend(loc='best', shadow=True, fontsize='xx-small')
-		# legend.get_frame().set_facecolor('w')
-		plt.show()
-		pdb.set_trace()
+		Single_UID_all_danmaku_df = self.time_line_to_dataframe(
+			self.ds.Single_UID_all_danmaku_timeline(input_UID=input_UID),
+			columns=['YMD_time', 'room_id', 'user_id', 'danmaku_count'])
 
+		nick_name = self.ds.show_me_your_id(input_UID, show_name=True)
+
+		visualize_dataframe(Single_UID_interpretation_df, title=f"{nick_name}: 同传弹幕统计")
+		visualize_dataframe(Single_UID_all_danmaku_df, title=f"{nick_name}: 全部弹幕统计")
 
 	def time_line_to_dataframe(self, timeline, columns):
 		df = pd.DataFrame(columns=columns)
@@ -59,4 +59,5 @@ class Naive_data_insight(object):
 if __name__ == '__main__':
 	NDI = Naive_data_insight()
 	# NDI.output_interpretation_man_rank_csv(csv_name="interpretation_man_rank.csv")
+	# pdb.set_trace()
 	NDI.visualize_single_uid_timeline(input_UID='37718180')
