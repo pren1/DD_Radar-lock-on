@@ -129,16 +129,16 @@ ds = Dataset_searcher("test.db")
 ds.connect_dataset()
 
 # '返回目标同传man发送的所有同传弹幕'
-all_interpretation = ds.show_target_interpretation_from_UID(input_UID='13946381')
+all_interpretation = ds.show_target_interpretation_from_UID(input_UID='739848')
 
 # ‘返回目标发送的所有弹幕’
-all_danmaku = ds.show_all_danmaku_from_UID(input_UID='13946381')
+all_danmaku = ds.show_all_danmaku_from_UID(input_UID='739848')
 
 # ‘返回目标同传弹幕信息随时间的变化’
-single_uid_interpretation_timeline = ds.Single_UID_interpretation_timeline(input_UID='37718180')
+single_uid_interpretation_timeline = ds.Single_UID_interpretation_timeline(input_UID='739848')
 
 # ‘返回目标弹幕数量随时间的变化’
-single_uid_all_danmaku_timeline = ds.Single_UID_all_danmaku_timeline(input_UID='37718180')
+single_uid_all_danmaku_timeline = ds.Single_UID_all_danmaku_timeline(input_UID='739848')
 
 # ‘设定最少发送的同传弹幕数，并以此筛选同传man名单’
 simultaneous_interpretation_man_list = ds.select_simultaneous_interpretation_man(man_threshold=100, show_name=False)
