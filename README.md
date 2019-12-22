@@ -28,23 +28,25 @@
 
 ### ⚡️ Quick start
 
-First, download the [bilibili-vtuber-danmaku](https://github.com/dd-center/bilibili-vtuber-danmaku.git) dataset.
+首先，下载 [bilibili-vtuber-danmaku](https://github.com/dd-center/bilibili-vtuber-danmaku.git) 弹幕数据库.
 
-Then, run:
-```
+运行:
+```python3
 Dataset_builder.py
 ```
 
-After that, run:
-```
+然后，运行:
+```python3
 Naive_data_insight.py
 ```
 
-Then the simultaneous interpretation man list will be saved to interpretation_man_rank.csv:
+### 🎉 Result examples
+
+同传man名单（含排名）将会被保存到 interpretation_man_rank.csv:
 
 |     |                 |       | 
 |-----|-----------------|-------| 
-| 昵称  | 同传弹幕数           |       | 
+| Rank  | 昵称           | 同传弹幕数 | 
 | 0   | 夜行游鬼            | 38644 | 
 | 1   | 殿子desu          | 35289 | 
 | 2   | 快递员小黑           | 23237 | 
@@ -69,15 +71,72 @@ Then the simultaneous interpretation man list will be saved to interpretation_ma
 | 21  | 纯白Cco           | 3236  | 
 | 22  | 斯辞              | 3226  | 
 
-Moreover, the data will be visualized as follows:
+接下来是相关数据可视化:
 
+#### 直播间同传弹幕数量变化
 <p>
-    <img src="image/dd_center.png"/>
+    <img src="image/fubuki.png"/>
 </p>
 
+<p>
+    <img src="image/mazili.png"/>
+</p>
 
+#### 同传man同传弹幕数量变化
 
+<p>
+    <img src="image/dianzi.png"/>
+</p>
 
+<p>
+    <img src="image/xiaov.png"/>
+</p>
 
+#### 弹幕数量变化（包含同传与非同传）
 
+<p>
+    <img src="image/feixue.png"/>
+</p>
 
+### ☁️ 应用API
+
+```python3
+from Naive_data_insight import Naive_data_insight
+NDI = Naive_data_insight()
+'导出同传man名单'
+NDI.output_interpretation_man_rank_csv(csv_name="interpretation_man_rank.csv")
+‘显示直播间同传弹幕数量变化’
+NDI.visualize_single_room_timeline(room_id='13946381')
+‘同传man同传弹幕数量变化 与 普通弹幕数量变化’
+NDI.visualize_single_uid_timeline(input_UID='27212086')
+```
+
+```python3
+from Dataset_searcher import Dataset_searcher
+ds = Dataset_searcher("test.db")
+ds.connect_dataset()
+'返回目标同传man发送的所有同传弹幕'
+all_interpretation = ds.show_target_interpretation_from_UID(input_UID='13946381')
+‘返回目标发送的所有弹幕’
+all_danmaku = ds.show_all_danmaku_from_UID(input_UID='13946381')
+‘返回目标同传弹幕信息随时间的变化’
+single_uid_interpretation_timeline = ds.Single_UID_interpretation_timeline(input_UID='37718180')
+‘返回目标弹幕数量随时间的变化’
+single_uid_all_danmaku_timeline = ds.Single_UID_all_danmaku_timeline(input_UID='37718180')
+‘设定最少发送的同传弹幕数，并以此筛选同传man名单’
+simultaneous_interpretation_man_list = ds.select_simultaneous_interpretation_man(man_threshold=100, show_name=False)
+‘获取某一时间段内的弹幕信息’
+date_within = ds.select_date_within(start_date='2019-09-01', end_date='2019-09-30')
+‘返回同传man的UID列表’
+pure_uid_man_list = [row[0] for row in simultaneous_interpretation_man_list]
+’返回目标直播间弹幕信息随时间的变化‘
+single_live_roow_interpretation_timeline = ds.Single_live_room_interpretation_timeline(input_room_id='11588230', pure_uid_man_list=pure_uid_man_list)
+‘生成直播间 ID与vtuber昵称的对应列表’
+ds.build_fast_name_chart()
+‘生成同传man UID与昵称的对应列表’
+ds.build_simultaneous_interpretation_man_name_chart(pure_uid_man_list=pure_uid_man_list)
+```
+### ☀️ 特别感谢
+* 感谢所有【同传man】对vtuber直播所付出的努力
+* 感谢[simon3000](https://github.com/simon300000)在开发过程中关于id与昵称转换的帮助
+* 感谢[Curtis Xiao](https://github.com/wudifeixue)对开发提出的建议
