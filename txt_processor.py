@@ -1,5 +1,5 @@
 # Created by pren1 at 5/24/2019
-
+# process data from the .txt files
 import pdb
 import numpy as np
 

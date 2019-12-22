@@ -1,4 +1,5 @@
 # Created by pren1 at 5/24/2019
+# Scan files within the target folder
 import os
 import pdb
 
