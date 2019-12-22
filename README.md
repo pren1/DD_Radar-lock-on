@@ -32,12 +32,12 @@
 
 运行:
 ```python3
-Dataset_builder.py
+python3 Dataset_builder.py
 ```
 
 然后，运行:
 ```python3
-Naive_data_insight.py
+python3 Naive_data_insight.py
 ```
 
 ### 🎉 Result examples
