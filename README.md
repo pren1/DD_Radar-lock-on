@@ -98,7 +98,7 @@ python3 Naive_data_insight.py
     <img src="image/feixue.png"/>
 </p>
 
-### ☁️ 应用API
+### ☁️ Utilization
 
 ```python3
 from Naive_data_insight import Naive_data_insight
@@ -149,7 +149,7 @@ ds.build_fast_name_chart()
 # ‘生成同传man UID与昵称的对应列表’
 ds.build_simultaneous_interpretation_man_name_chart(pure_uid_man_list=pure_uid_man_list)
 ```
-### ☀️ 特别感谢
+### ☀️ Special thanks
 * 感谢所有【同传man】对bilibili vtuber直播所付出的努力
 * 感谢[simon3000](https://github.com/simon300000)在开发过程中关于id与昵称转换的帮助
 * 感谢[Curtis Xiao](https://github.com/wudifeixue)对开发提出的建议
