@@ -119,7 +119,7 @@ NDI.output_interpretation_man_rank_csv(csv_name="interpretation_man_rank.csv")
 # ‘显示直播间同传弹幕数量变化’
 NDI.visualize_single_room_timeline(room_id='13946381')
 
-# ‘同传man同传弹幕数量变化 与 普通弹幕数量变化’
+# ‘显示同传man同传弹幕数量变化 与 普通弹幕数量变化’
 NDI.visualize_single_uid_timeline(input_UID='27212086')
 ```
 
