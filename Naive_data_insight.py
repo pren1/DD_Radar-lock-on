@@ -6,6 +6,8 @@ import pandas as pd
 import pdb
 import matplotlib.pyplot as plt
 import seaborn as sns
+pd.set_option('display.max_rows', 500)
+pd.set_option('display.max_columns', 500)
 
 class Naive_data_insight(object):
 	def __init__(self):
@@ -62,4 +64,4 @@ if __name__ == '__main__':
 	NDI = Naive_data_insight()
 	# NDI.output_interpretation_man_rank_csv(csv_name="interpretation_man_rank.csv")
 	# pdb.set_trace()
-	NDI.visualize_single_uid_timeline(input_UID='37718180')
+	NDI.visualize_single_uid_timeline(input_UID='739848')
