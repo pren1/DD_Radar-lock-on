@@ -6,7 +6,7 @@
 
 ### 📃 Introduction
 
-同 传 摸 鱼 检 测 机
+同 传 摸 鱼/DD 检 测 机
 
 本脚本通过对过去七个月所记录的vtuber相关bilibili直播弹幕处理，实现以下功能：
 
