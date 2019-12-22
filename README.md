@@ -103,11 +103,14 @@ Naive_data_insight.py
 ```python3
 from Naive_data_insight import Naive_data_insight
 NDI = Naive_data_insight()
-'导出同传man名单'
+
+# '导出同传man名单'
 NDI.output_interpretation_man_rank_csv(csv_name="interpretation_man_rank.csv")
-‘显示直播间同传弹幕数量变化’
+
+# ‘显示直播间同传弹幕数量变化’
 NDI.visualize_single_room_timeline(room_id='13946381')
-‘同传man同传弹幕数量变化 与 普通弹幕数量变化’
+
+# ‘同传man同传弹幕数量变化 与 普通弹幕数量变化’
 NDI.visualize_single_uid_timeline(input_UID='27212086')
 ```
 
@@ -115,28 +118,38 @@ NDI.visualize_single_uid_timeline(input_UID='27212086')
 from Dataset_searcher import Dataset_searcher
 ds = Dataset_searcher("test.db")
 ds.connect_dataset()
-'返回目标同传man发送的所有同传弹幕'
+
+# '返回目标同传man发送的所有同传弹幕'
 all_interpretation = ds.show_target_interpretation_from_UID(input_UID='13946381')
-‘返回目标发送的所有弹幕’
+
+# ‘返回目标发送的所有弹幕’
 all_danmaku = ds.show_all_danmaku_from_UID(input_UID='13946381')
-‘返回目标同传弹幕信息随时间的变化’
+
+# ‘返回目标同传弹幕信息随时间的变化’
 single_uid_interpretation_timeline = ds.Single_UID_interpretation_timeline(input_UID='37718180')
-‘返回目标弹幕数量随时间的变化’
+
+# ‘返回目标弹幕数量随时间的变化’
 single_uid_all_danmaku_timeline = ds.Single_UID_all_danmaku_timeline(input_UID='37718180')
-‘设定最少发送的同传弹幕数，并以此筛选同传man名单’
+
+# ‘设定最少发送的同传弹幕数，并以此筛选同传man名单’
 simultaneous_interpretation_man_list = ds.select_simultaneous_interpretation_man(man_threshold=100, show_name=False)
-‘获取某一时间段内的弹幕信息’
+
+# ‘获取某一时间段内的弹幕信息’
 date_within = ds.select_date_within(start_date='2019-09-01', end_date='2019-09-30')
-‘返回同传man的UID列表’
+
+# ‘返回同传man的UID列表’
 pure_uid_man_list = [row[0] for row in simultaneous_interpretation_man_list]
-’返回目标直播间弹幕信息随时间的变化‘
+
+# ’返回目标直播间弹幕信息随时间的变化‘
 single_live_roow_interpretation_timeline = ds.Single_live_room_interpretation_timeline(input_room_id='11588230', pure_uid_man_list=pure_uid_man_list)
-‘生成直播间 ID与vtuber昵称的对应列表’
+
+# ‘生成直播间 ID与vtuber昵称的对应列表’
 ds.build_fast_name_chart()
-‘生成同传man UID与昵称的对应列表’
+
+# ‘生成同传man UID与昵称的对应列表’
 ds.build_simultaneous_interpretation_man_name_chart(pure_uid_man_list=pure_uid_man_list)
 ```
 ### ☀️ 特别感谢
-* 感谢所有【同传man】对vtuber直播所付出的努力
+* 感谢所有【同传man】对bilibili vtuber直播所付出的努力
 * 感谢[simon3000](https://github.com/simon300000)在开发过程中关于id与昵称转换的帮助
 * 感谢[Curtis Xiao](https://github.com/wudifeixue)对开发提出的建议
