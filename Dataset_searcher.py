@@ -31,6 +31,7 @@ class Dataset_searcher(object):
 		return res.json()['data']['name']
 
 	def select_date_within(self, start_date, end_date):
+		'Check interpretations within an time interval, deprecated, and never used. Just for debug purpose'
 		cursor = self.c.execute("SELECT YMD_time, UID, message, count(YMD_time) "
 		                        "from DD_DANMAKU_TABLE WHERE substr(message,1,1) = '【' AND substr(message,-1,1) = '】' AND UID != '114514' AND YMD_time BETWEEN ? AND ?"
 		                        "GROUP by YMD_time ORDER BY count(YMD_time) DESC;", (start_date, end_date))
@@ -82,25 +83,11 @@ class Dataset_searcher(object):
 if __name__ == '__main__':
 	ds = Dataset_searcher("test.db")
 	ds.connect_dataset()
-
-	single_uid_interpretation_timeline = ds.Single_UID_interpretation_timeline(input_UID='37718180')
-	pdb.set_trace()
-
-	start_time = time.time()
 	simultaneous_interpretation_man_list = ds.select_simultaneous_interpretation_man(man_threshold=100, show_name=False)
-	print("simultaneous_interpretation_man selected within {}".format("--- %s seconds ---" % (time.time() - start_time)))
-	print(simultaneous_interpretation_man_list)
-
-	pure_uid_man_list = [row[0] for row in simultaneous_interpretation_man_list]
-	single_live_roow_interpretation_timeline = ds.Single_live_roow_interpretation_timeline(input_room_id='11588230', pure_uid_man_list=pure_uid_man_list)
-	pdb.set_trace()
-
+	date_within = ds.select_date_within(start_date='2019-09-01', end_date='2019-09-30')
+	all_interpretation = ds.show_target_interpretation_from_UID(input_UID='268065764')
+	all_danmaku = ds.show_all_danmaku_from_UID(input_UID='268065764')
 	single_uid_interpretation_timeline = ds.Single_UID_interpretation_timeline(input_UID='37718180')
 	single_uid_all_danmaku_timeline = ds.Single_UID_all_danmaku_timeline(input_UID='37718180')
-	pdb.set_trace()
-
-	# date_within = ds.select_date_within(start_date='2019-09-01', end_date='2019-09-30')
-	# all_interpretation = ds.show_target_interpretation_from_UID(input_UID='268065764')
-	all_danmaku = ds.show_all_danmaku_from_UID(input_UID='268065764')
-	pdb.set_trace()
-
+	pure_uid_man_list = [row[0] for row in simultaneous_interpretation_man_list]
+	single_live_roow_interpretation_timeline = ds.Single_live_roow_interpretation_timeline(input_room_id='11588230', pure_uid_man_list=pure_uid_man_list)
