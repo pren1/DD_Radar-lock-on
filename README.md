@@ -28,15 +28,17 @@
 
 ### ⚡️ Quick start
 
-首先，下载 [bilibili-vtuber-danmaku](https://github.com/dd-center/bilibili-vtuber-danmaku.git) 弹幕数据库:
+首先，下载本repo:
+```
+git clone https://github.com/pren1/DD_Radar-lock-on.git
+```
+
+然后，下载 [bilibili-vtuber-danmaku](https://github.com/dd-center/bilibili-vtuber-danmaku.git) 弹幕数据库到**本repo**文件夹下:
 ```
 git clone https://github.com/dd-center/bilibili-vtuber-danmaku.git
 ```
 
-下载本repo:
-```
-git clone https://github.com/pren1/DD_Radar-lock-on.git
-```
+
 
 运行:
 ```python3
