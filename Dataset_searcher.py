@@ -31,6 +31,12 @@ class Dataset_searcher(object):
 		res = requests.get(url)
 		return res.json()['data']['name']
 
+	def show_me_your_room_id(self, room_id):
+		'Get room id name'
+		url = f'https://api.live.bilibili.com/live_user/v1/UserInfo/get_anchor_in_room?roomid={room_id}'
+		res = requests.get(url)
+		return res.json()['data']['info']['uname']
+
 	def select_date_within(self, start_date, end_date):
 		'Check interpretations within an time interval, deprecated, and never used. Just for debug purpose'
 		cursor = self.c.execute("SELECT YMD_time, UID, message, count(YMD_time) "
@@ -60,7 +66,7 @@ class Dataset_searcher(object):
 		cursor = self.c.execute("SELECT YMD_time, room_id, UID, message, count(message) "
 		                        "from DD_DANMAKU_TABLE WHERE substr(message,1,1) = '【' AND substr(message,-1,1) = '】' AND UID != '114514' AND UID = ?"
 		                        "GROUP by YMD_time, room_id ORDER BY YMD_time;", (input_UID,))
-		return [[row[0], row[1], row[2], row[4]] for row in cursor]
+		return [[row[0], self.show_me_your_room_id(row[1]), row[2], row[4]] for row in cursor]
 
 	def Single_UID_all_danmaku_timeline(self, input_UID):
 		'Show the timeline of all the danmaku numbers sent by input_UID'
@@ -68,7 +74,7 @@ class Dataset_searcher(object):
 		cursor = self.c.execute("SELECT YMD_time, room_id, UID, message, count(message) "
 		                        "from DD_DANMAKU_TABLE WHERE UID != '114514' AND UID = ?"
 		                        "GROUP by YMD_time, room_id ORDER BY YMD_time;", (input_UID,))
-		return [[row[0], row[1], row[2], row[4]] for row in cursor]
+		return [[row[0], self.show_me_your_room_id(row[1]), row[2], row[4]] for row in cursor]
 
 	def Single_live_roow_interpretation_timeline(self, input_room_id, pure_uid_man_list):
 		'Show the timeline of interpretation within the target live room'
@@ -83,6 +89,7 @@ class Dataset_searcher(object):
 
 if __name__ == '__main__':
 	ds = Dataset_searcher("test.db")
+	ds.show_me_room_id('11588230')
 	ds.connect_dataset()
 	simultaneous_interpretation_man_list = ds.select_simultaneous_interpretation_man(man_threshold=100, show_name=False)
 	date_within = ds.select_date_within(start_date='2019-09-01', end_date='2019-09-30')

@@ -33,6 +33,8 @@ class Naive_data_insight(object):
 			g.fig.legend(loc='best', shadow=True)
 			g.map(plt.plot, "YMD_time", "danmaku_count")
 			plt.title(title)
+			plt.xlabel('时间轴')
+			plt.ylabel('弹幕数')
 			plt.gcf().autofmt_xdate()
 			plt.subplots_adjust(left=0.08, bottom=0.10, right=0.98, top=0.93, wspace=0.05, hspace=0.05)
 			plt.show()
