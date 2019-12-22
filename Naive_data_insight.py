@@ -19,9 +19,7 @@ class Naive_data_insight(object):
 		self.pure_uid_man_list = [row[0] for row in self.simultaneous_interpretation_man_list]
 
 	def output_interpretation_man_rank_csv(self, csv_name):
-		interpretation_man_rank_list = self.ds.select_simultaneous_interpretation_man(man_threshold=self.man_threshold,
-		                                                                               show_name=True)
-
+		interpretation_man_rank_list = [[self.ds.prefetched_man_id(row[0]), row[1]] for row in self.simultaneous_interpretation_man_list]
 		df = self.time_line_to_dataframe(interpretation_man_rank_list, columns=['昵称', '同传弹幕数'])
 		df.to_csv(csv_name, sep='\t', encoding='utf-8')
 
@@ -84,7 +82,8 @@ class Naive_data_insight(object):
 
 if __name__ == '__main__':
 	NDI = Naive_data_insight()
-	# NDI.output_interpretation_man_rank_csv(csv_name="interpretation_man_rank.csv")
-	# pdb.set_trace()
+	NDI.output_interpretation_man_rank_csv(csv_name="interpretation_man_rank.csv")
 	NDI.visualize_single_room_timeline(room_id='11588230')
 	NDI.visualize_single_uid_timeline(input_UID='739848')
+	NDI.visualize_single_uid_timeline(input_UID='27212086')
+	NDI.visualize_single_uid_timeline(input_UID='9572567')

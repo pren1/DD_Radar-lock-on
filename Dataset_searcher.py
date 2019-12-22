@@ -131,6 +131,7 @@ class Dataset_searcher(object):
 		return [(row[0], row[1], self.prefetched_man_id(row[2]), row[4]) for row in cursor]
 
 if __name__ == '__main__':
+	'demo'
 	ds = Dataset_searcher("test.db")
 	ds.connect_dataset()
 	all_interpretation = ds.show_target_interpretation_from_UID(input_UID='739848')
