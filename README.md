@@ -109,6 +109,7 @@ python3 Naive_data_insight.py
 </p>
 
 ### ☁️ Utilization
+更详细的注释在相应函数内
 
 ```python3
 from Naive_data_insight import Naive_data_insight
