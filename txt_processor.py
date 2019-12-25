@@ -12,14 +12,18 @@ class txt_processor:
 		# Read in target txt into a string list
 		if not self.path.endswith('.txt'):
 			assert (1 == 0), "extension is not txt"
-		with open(self.path, "r") as txtfile:
+		with open(self.path, "r", encoding='utf-8') as txtfile:
 			data = txtfile.readlines()
 		# Remove '\n'
 		self.txt_list = [string.rstrip('\n') for string in data]
 		# process the readin list with format: [Time, UID, Message]
 		self.txt_list = self.preprocess_readin_list()
 		# Turn to numpy array...
-		self.txt_list = np.asarray(self.txt_list)
+		try:
+			self.txt_list = np.asarray(self.txt_list)
+		except MemoryError:
+			print("error at %s" % self.path)
+			return []
 		return self.txt_list
 
 	def preprocess_readin_list(self):
@@ -33,31 +37,30 @@ class txt_processor:
 			elif single_string[:10] == 'SPEAKERNUM':
 				continue
 			else:
-				# Find the first occurance of ':'
-				sign_pos = single_string.find(':')
-				if sign_pos == -1:
-					# Assign a fake UID
-					UID = 114514
-					message = single_string
-				else:
-					# assert single_string[:sign_pos].isdigit() == True
-					if single_string[:sign_pos].isdigit() != True:
-						# Assign a fake UID, in this condition, the string itself contains ':', and no UID is provided here
-						UID = 114514
-						message = single_string
-					else:
-						sign_pos = single_string.rfind(':')
-						UID_string = single_string[:sign_pos]
-						uid_sign_pos = UID_string.find(':')
-						if uid_sign_pos == -1:
-							UID = int(UID_string)
-						else:
-							UID = UID_string[uid_sign_pos + 1:]
-						message = single_string[sign_pos + 1:]
-				if message == 'V2':
-					'We simply remove the final V2 message in every txt files'
+				
+				sep = single_string.split(':', 2)
+				if len(sep) == 1 and sep[0] == 'V2':
 					continue
-				new_list.append([current_time_stamp, UID, message])
+				
+				else:
+					if len(sep) == 1: #if time_stamp and UID are NOT RECORDED
+						sep = ['0', '0'] + sep
+					elif len(sep) == 2: #if time_stamp is NOT RECORDED
+						try:
+							int(sep[0])
+							sep = ['0'] + sep #if sep[0] is numbers, UID is RECORDED
+						except ValueError:
+							sep = ['0', '0', single_string] #otherwise, UID is NOT RECORDED
+					else:
+						try:
+							int(sep[1]) 
+						except ValueError: #maybe time_stamp is NOT RECORDED
+							try:
+								int(sep[0])
+								sep = ['0', sep[0], sep[1]+':'+sep[2]] #here sep[0] records UID
+							except ValueError: #time_stamp is NOT RECORDED
+								sep = ['0', '0', single_string]
+					new_list.append([current_time_stamp, sep[1], sep[2]])
 		return new_list
 
 	def Time_to_stamp_number(self, time_string):
