@@ -4,6 +4,35 @@
     <img src="image/dd_center.png"/>
 </p>
 
+### 🤝 Contributor: 
+
+[pren1](https://github.com/pren1), [scPointer](https://github.com/scPointer)
+
+### 📦 Update by [scPointer](https://github.com/scPointer)
+#### version 1.1
+debug :
+1. 修改有关文件路径 '\'为 os.sep 
+2. 原文件中用最后一个半角冒号分隔UID和弹幕，但弹幕中可能出现冒号，如 "_(:зゝ∠)_"，导致UID未正确划分 
+3. 一些弹幕文件信息出错导致 numpy 的 asarray 函数请求过量空间。用 try-except 特判解决 
+
+功能改动：
+4. 修改同传判定规则，并附在建库代码中。这意味着同传判定在建库时进行而不是在查询时。
+5. 原弹幕数据bilibili-vtuber-danmaku中最初记录数据没有UID或时间戳，用txt_processor.preprocess_readin_list()中一长串特判解决了这个问题。没有UID的同传部分单独划分到UID=0。
+6. 增加输出信息项：同传平均字符数，同传偏爱直播间等。所有附加信息只使用一次查询实现。
+
+时间效率改进：
+7. 修改数据库输入信息，现在只录入同传弹幕的用户/直播间/日期/时间/长度，且不记录弹幕内容。数据库大小3.11GB -> 38MB，所有信息都可以几秒出解。后续可以增加记录弹幕内容，改动不大。
+8. 修改数据库内记录项的格式。之前所有格式均为文本，增加了搜索数据时比较项不必要的时间。
+
+结构改动：
+9. 因为更新了判定规则，检测到的同传man变多了，所以顺便更新了man_id_nick_name_chart.csv
+10. 修改 Data_seatcher.py 中sqlite查询语句的结构。
+11. 使用constants统一规范一些变量：数据库名，同传man的id/昵称对应文件名，直播间的id/昵称对应文件名，输出同传man的rank的文件名
+
+适配：
+12. 暂时把所有形如 f'abc{d}'的改成 'abc'+str(d) (done)
+13. 调用b站api找直播间和同传man名字时可能会卡，加个delay
+
 ### 📃 Introduction
 
 本脚本通过对过去七个月所记录的vtuber相关bilibili直播弹幕处理，实现以下功能：
@@ -104,33 +133,6 @@ python3 Naive_data_insight.py
 <p>
     <img src="image/feixue.png"/>
 </p>
-
-### Update
-#### version 1.1
-debug :
-1. 修改有关文件路径 '\'为 os.sep 
-2. 原文件中用最后一个半角冒号分隔UID和弹幕，但弹幕中可能出现冒号，如 "_(:зゝ∠)_"，导致UID未正确划分 
-3. 一些弹幕文件信息出错导致 numpy 的 asarray 函数请求过量空间。用 try-except 特判解决 
-
-功能改动：
-4. 修改同传判定规则，并附在建库代码中。这意味着同传判定在建库时进行而不是在查询时。
-5. 原弹幕数据bilibili-vtuber-danmaku中最初记录数据没有UID或时间戳，用txt_processor.preprocess_readin_list()中一长串特判解决了这个问题。没有UID的同传部分单独划分到UID=0。
-6. 增加输出信息项：同传平均字符数，同传偏爱直播间等。所有附加信息只使用一次查询实现。
-
-时间效率改进：
-7. 修改数据库输入信息，现在只录入同传弹幕的用户/直播间/日期/时间/长度，且不记录弹幕内容。数据库大小3.11GB -> 38MB，所有信息都可以几秒出解。后续可以增加记录弹幕内容，改动不大。
-8. 修改数据库内记录项的格式。之前所有格式均为文本，增加了搜索数据时比较项不必要的时间。
-
-结构改动：
-9. 因为更新了判定规则，检测到的同传man变多了，所以顺便更新了man_id_nick_name_chart.csv
-10. 修改 Data_seatcher.py 中sqlite查询语句的结构。
-11. 使用constants统一规范一些变量：数据库名，同传man的id/昵称对应文件名，直播间的id/昵称对应文件名，输出同传man的rank的文件名
-
-适配：
-12. 暂时把所有形如 f'abc{d}'的改成 'abc'+str(d) (done)
-13. 调用b站api找直播间和同传man名字时可能会卡，加个delay
-
-by scPointer
 
 ### ☁️ Utilization
 更详细的注释在相应函数内
